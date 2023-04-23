@@ -1,3 +1,5 @@
+/* Lívia Lutz dos Santos - 2211055 - 3WB */
+
 #define NUM_BITS 128
 typedef unsigned char BigInt[NUM_BITS / 8];
 
