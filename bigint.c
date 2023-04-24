@@ -36,8 +36,6 @@ void big_val(BigInt res, long val) {
 
 }
 
-/*Como o array BigInt é unsigned, fazemos as operações sem sinal*/
-
 /* Operacoes aritmeticas */
 
 /* res = -a */
