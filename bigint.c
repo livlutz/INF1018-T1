@@ -15,7 +15,7 @@ void big_val(BigInt res, long val) {
   
   /* Para preencher as 8 posições restantes do array, existem 2 condições: */
   
-  /* Se o byte mais significativo é 1, o número é negativo, então os outros bytes tem q ser FF*/
+  /* Se o bit mais significativo do byte mais significativo do long é 1, o número é negativo, então os outros bytes tem q ser FF*/
   
   if((res[7] & 0x80) == 0x80) { 
   
