@@ -60,67 +60,28 @@ void big_comp2(BigInt res, BigInt a) {
 /* res = a + b */
 
 void big_sum(BigInt res, BigInt a, BigInt b) {
-   
-   int mostSiga, mostSigb, mostSigRes, overFlow, i = 0;
 
-  for (; i < (NUM_BITS / 8); i++) {
+  //Variável para guardar o valor do bit mais significativo de cada byte e para controlar o overflow da soma
+
+  unsigned char overflow = 0x00;
+
+  //Variável para guardar o resultado da soma dos bytes (um short tem 2 bytes, então usamos um short para guardar o resultado da soma de 2 bytes)
   
-    if ((overFlow == 1) && (a[i] != 0xFF)) {
-      
-      a[i]++; 
-      
-      overFlow = 0;
-    
-    }
-    
-    else if((overFlow == 1) && (b[i] != 0xFF)) {
-    
-    	b[i]++;
-    	
-    	overFlow = 0;
-    
-    }
-    
-  
-    if((a[i] & 0x80) == 0x80) {
-    	mostSiga = 1;
-    }
-    
-    else{
-      mostSiga = 0;
-     
-    if ((b[i] & 0x80) == 0x80) {
-    	mostSigb = 1;
-    }
-    
-    else{
-    	mostSigb = 0;	
-    } 
-  
-    res[i] = a[i] + b[i];
-    
-    if ((res[i] & 0x80) == 0x80) {
-       mostSigRes = 1;
-    }
-    
-    else{
-      mostSigRes = 0;
-    }
-    
-    if ((mostSiga == 1) && (mostSigb == 1)) {
-      overFlow = 1;
-    }
-    
-    else if ((mostSiga == 1 || mostSigb == 1) && (mostSigRes == 0)) { 
-    
-      overFlow = 1; 
-      
-      res[i] &= 0x80;
-     
-    }
-    
-   }
-    
+  unsigned short soma;
+
+  // Percorremos todo o array para fazer a soma dos bytes
+
+  for (int i = 0; i < (NUM_BITS/8) ; i++) {
+
+    // Faz a soma dos bytes com o overflow e guarda no short soma
+    soma = a[i] + b[i] + overflow;
+
+    // Pega o byte menos significativo do resultado da soma e guarda no array de resposta
+    res[i] = soma & 0xFF;
+
+    // Guarda o valor do bit mais significativo da soma para controlar o overflow que sera passado para o proximo byte
+    overflow = soma >> 8;
+  }
 }
 
 /* res = a - b */
