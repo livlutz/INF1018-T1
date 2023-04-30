@@ -1,3 +1,5 @@
+/* Lívia Lutz dos Santos - 2211055 - 3WB */
+
 #include <stdio.h>
 #include "bigint.h"
 
