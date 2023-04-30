@@ -193,3 +193,120 @@ void big_shl(BigInt res, BigInt a, int n) {
   }
   
 }
+  
+/* res = a >> n (logico) */
+
+void big_shr(BigInt res, BigInt a, int n){
+
+  int j = 0;
+
+  unsigned char shiftLeft, posterior = 0x00;
+
+  for (int i = 0; i < (NUM_BITS/8); i++) {
+    res[i] = a[i];
+  }
+
+  for(; j < (n/8); j++){
+   
+    for(int k = 0; k < (NUM_BITS/8); k++){
+   	
+   		if (k == (NUM_BITS/8)-1){
+   			res[k] = 0x00;
+   		}
+   		
+   		else{
+   			res[k] = res[k+1];
+   		}
+   	
+   	}
+   	
+  }
+   
+  if ((n % 8) != 0){
+
+    j = (NUM_BITS/8) - j;
+
+    for(;j >= 0;j--){
+
+      if(j == (NUM_BITS/8)-1){
+        shiftLeft = 0x00;
+      }
+
+      else{
+        shiftLeft=res[j] << (8-(n%8));
+      }
+
+      res[j] >>= (n%8);
+
+      res[j] |= posterior;
+
+      posterior=shiftLeft; 
+    }
+  
+
+  }
+    
+}
+
+/* res = a >> n (aritmetico) */
+
+void big_sar(BigInt res, BigInt a, int n){
+
+  int j = 0;
+
+  unsigned char shiftLeft, posterior,mostSig;
+
+  for (int i = 0; i < (NUM_BITS/8); i++) {
+    res[i] = a[i];
+  }
+
+  mostSig=res[(NUM_BITS/8)-1];
+
+  if((mostSig & 0x80) == 0x80){
+    posterior = 0xFF << (n % 8);
+  }
+
+  else{
+    posterior = 0x00;
+  }
+
+  for(; j < (n/8); j++){
+   
+    for(int k = 0; k < (NUM_BITS/8); k++){
+   	
+   		if (k == (NUM_BITS/8)-1){
+   			if((res[k] & 0x80) == 0x80){
+          res[k] = 0xFF;
+        }
+        else{
+          res[k] = 0x00;
+        }
+   		}
+   		else{
+   			res[k] = res[k+1];
+   		}
+   	
+   	}
+   	
+  }
+   
+  if ((n % 8) != 0){
+
+    j = (NUM_BITS/8) - j;
+
+    for(;j >= 0;j--){
+
+      shiftLeft=res[j] << (8-(n%8));
+
+      res[j] >>= (n%8);
+
+      res[j] |= posterior;
+
+      posterior=shiftLeft; 
+    }
+  
+
+  }
+
+
+}
