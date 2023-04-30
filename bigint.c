@@ -115,7 +115,7 @@ void big_sum(BigInt res, BigInt a, BigInt b) {
     
       overFlow = 1; 
       
-      res[i] |= 0x80;
+      res[i] &= 0x80;
      
     }
     
