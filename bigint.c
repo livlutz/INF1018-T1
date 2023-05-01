@@ -98,7 +98,55 @@ void big_sub(BigInt res, BigInt a, BigInt b) {
   
 /* res = a * b */
 
-void big_mul(BigInt res, BigInt a, BigInt b);
+void big_mul(BigInt res, BigInt a, BigInt b) {
+
+  //Variável int para guardar o resultado da multiplicação dos 2 bytes
+
+  unsigned int mult;
+
+  //inicializa o array de resposta com 0
+
+  for(int i = 0; i < (NUM_BITS/8) ; i++){
+    res[i] = 0x00;
+  }
+
+    //Percorre todo o array para fazer a multiplicação dos bytes
+
+  for(int i = 0; i < (NUM_BITS/8) ; i++){
+        
+    for(int j = 0; j < (NUM_BITS/8) ; j++){
+          
+      if((i+j) < (NUM_BITS/8)){
+            
+        //multiplica os bytes e guarda em uma variavel short (2 bytes, 1 byte para cada byte multiplicado)
+            
+        mult =  a[i] * b[j];
+            
+        //guarda o byte menos significativo do resultado da multiplicação no array de resposta
+            
+        res[i+j] += mult & 0xFF;
+            
+        //guarda o byte mais significativo do resultado da multiplicação no array de resposta
+            
+        res[i+j+1] += mult >> 8;
+      }
+    
+    }
+  }
+
+    //faz o tratamento do overflow
+
+  for(int i = 0; i < (NUM_BITS/8) -1 ; i++){
+    //guarda o byte menos significativo do resultado da multiplicação no array de resposta
+        
+    res[i] &= 0xFF;
+
+    //guarda o byte mais significativo do resultado da multiplicação no array de resposta
+
+    res[i+1] += res[i] >> 8;
+  }
+
+}
   
 /* Operacoes de deslocamento */
 
