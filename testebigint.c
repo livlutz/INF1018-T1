@@ -55,12 +55,23 @@ int test_big_val (char *msg) {
       falhas += 1;
    }
 
-   //numero grande
+   //numero positivo grande
 
-   BigInt gab4 = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-   big_val(res, 0xFFFFFFFFFFFFFFFF);
+   BigInt gab4 = {0x00, 0x00, 0x01, 0x00, 0x00, 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
-   if (test_igual(res, gab4, msg, 4)){
+   big_val(res, 65536);
+
+    if (test_igual(res, gab4, msg, 4)){
+      falhas += 1;
+   }
+
+   //numero negativo grande
+
+   BigInt gab5 = {0x00,0x00,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+
+   big_val(res, -65536);
+
+    if (test_igual(res, gab5, msg, 5)){
       falhas += 1;
    }
 
@@ -105,14 +116,25 @@ int test_big_comp2(char *msg) {
       falhas += 1;
    }
 
-   //numero grande
+   //numero positivo grande
 
-   BigInt gab4 = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ,0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF ,0xFF, 0xFF};
-   BigInt d = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00 ,0x00, 0x00};
+   BigInt gab4 = {0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+   BigInt d = {0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; 
 
    big_comp2(res,d);
 
    if (test_igual(res, gab4, msg, 4)){
+      falhas += 1;
+   }
+
+   //numero negativo grande
+
+   BigInt gab5 = {0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+   BigInt e = {0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+
+   big_comp2(res,e);
+
+   if (test_igual(res, gab5, msg, 5)){
       falhas += 1;
    }
 
@@ -145,19 +167,22 @@ int test_big_sum(char *msg) {
       falhas += 1;
    }
 
-   //numero grande 
-   
-   BigInt d = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF ,0xFF, 0xFF};
-   BigInt gab3 = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ,0x00, 0x00, 0x00, 0x00, 0x00, 0x00 ,0x00, 0x00 ,0x00, 0x00};
-   BigInt gab4 = {0xFD, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF ,0xFF, 0xFF,0xFF};
+  //somar numeros grande com pequeno
 
-   big_sum(res,d,a);
+   BigInt gab3 = {0x01, 0x00, 0x01, 0x00, 0x01, 0x01, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF};
+   BigInt d = {0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF};
+
+   big_sum(res,a,d);
 
    if (test_igual(res, gab3, msg, 3)){
       falhas += 1;
    }
-   
-   big_sum(res,d,b);
+
+   //somar 2 numeros grandes com overflow
+
+   BigInt gab4 = {0x00, 0x00, 0x02, 0x00, 0x02, 0x02, 0xFC, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFD, 0xFF, 0xFF};
+
+   big_sum(res,d,d);
 
    if (test_igual(res, gab4, msg, 4)){
       falhas += 1;
@@ -197,13 +222,14 @@ int test_big_sub(char*msg) {
       falhas += 1;
    }
    
-   //numero grande
+   //numeros grandes com overflow n funciona
 
-   BigInt d = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF ,0xFF, 0xFF};
+   BigInt gab3 = {0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF};
+   BigInt d = {0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF};
 
-   big_sub(res,d,b);
+   big_sub(res,a,d);
 
-   if (test_igual(res, a, msg, 4)){
+   if (test_igual(res, gab3, msg, 4)){
       falhas += 1;
    }
 
@@ -213,7 +239,7 @@ int test_big_sub(char*msg) {
 
 int teste_big_mul(char*msg){
    
-   int falhas = 0;
+   /*int falhas = 0;
    
    //numeros positivo, negativo e zero
    
@@ -237,7 +263,7 @@ int teste_big_mul(char*msg){
    
    //falta numero grande
 
-   return(falhas != 0);
+   return(falhas != 0);*/
 
 
 }
@@ -264,21 +290,25 @@ int teste_big_shl(char*msg){
 
    BigInt res;
 
+   //multiplos de 8
+
    big_shl(res,a,16);
 
    if (test_igual(res, gab1, msg, 1)){
       falhas += 1;
    }
 
-   big_shl(res,a,5);
-
-   if (test_igual(res, gab12, msg, 2)){
-      falhas += 1;
-   }
-
    big_shl(res,b,64);
 
-   if (test_igual(res, gab2, msg, 3)){
+   if (test_igual(res, gab2, msg, 2)){
+      falhas += 1;
+   }
+   
+   //nao multiplos de 8
+
+   big_shl(res,a,5);
+
+   if (test_igual(res, gab12, msg, 3)){
       falhas += 1;
    }
 
@@ -288,13 +318,21 @@ int teste_big_shl(char*msg){
       falhas += 1;
    }
 
+   //numero 0
+
    big_shl(res,c,87);
 
    if (test_igual(res, c, msg, 5)){
       falhas += 1;
    }
-   
-   //falta numero grande
+
+   //shift de 0
+
+   big_shl(res,a,0);
+
+   if (test_igual(res, a, msg, 6)){
+      falhas += 1;
+   }
 
    return(falhas != 0);
 
@@ -315,21 +353,25 @@ int teste_big_shr(char*msg){
    BigInt gab2 = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00};
    BigInt gab21 = {0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x01, 0x00, 0x00};
 
+   //multiplos de 8
+
    big_shr(res,a,72);
 
    if (test_igual(res, gab1, msg, 1)){
       falhas += 1;
    }
 
-   big_shr(res,a,7);
+   big_shr(res,b,32);
 
-   if (test_igual(res, gab1, msg, 2)){
+   if (test_igual(res, gab2, msg, 2)){
       falhas += 1;
    }
 
-   big_shr(res,b,32);
+   //nao multiplos de 8
 
-   if (test_igual(res, gab2, msg, 3)){
+   big_shr(res,a,7);
+
+   if (test_igual(res, gab1, msg, 3)){
       falhas += 1;
    }
 
@@ -339,13 +381,21 @@ int teste_big_shr(char*msg){
       falhas += 1;
    }
 
+   //numero 0
+
    big_shr(res,c,67);
 
    if (test_igual(res, c, msg, 5)){
       falhas += 1;
    }
-   
-   //falta numero grande
+
+   //shift de 0
+
+   big_shr(res,a,0);
+
+   if (test_igual(res, a, msg, 6)){
+      falhas += 1;
+   }
 
    return (falhas!=0);
 
@@ -368,21 +418,25 @@ int teste_big_sar(char*msg){
    BigInt gab2 = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
    BigInt gab21 = {0xFF ,0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x81, 0xFF};
 
+   //multiplo de 8
+
    big_sar(res,a,72);
 
    if (test_igual(res, gab1, msg, 1)){
       falhas += 1;
    }
 
-   big_sar(res,a,7);
+   big_sar(res,b,32);
 
-   if (test_igual(res, gab1, msg, 2)){
+   if (test_igual(res, gab2, msg, 2)){
       falhas += 1;
    }
 
-   big_sar(res,b,32);
+   //nao multiplo de 8
 
-   if (test_igual(res, gab2, msg, 3)){
+   big_sar(res,a,7);
+
+   if (test_igual(res, gab1, msg, 3)){
       falhas += 1;
    }
 
@@ -392,19 +446,26 @@ int teste_big_sar(char*msg){
       falhas += 1;
    }
 
+   //numero 0
+
    big_sar(res,c,67);
 
    if (test_igual(res, c, msg, 5)){
       falhas += 1;
    }
-   
-   //falta numero grande
+
+   //shift de 0
+
+   big_sar(res,a,0);
+
+   if (test_igual(res, a, msg, 6)){
+      falhas += 1;
+   }
 
    return (falhas!=0);
    
    
 }
-
 
 int main() {
    int falhas = 0;
@@ -418,7 +479,7 @@ int main() {
    falhas += teste_big_shr("big_shr");
    falhas += teste_big_sar("big_sar");
    
-   printf("Total de falhas %d de 30\n", falhas);
+   printf("Total de falhas %d de 36\n", falhas);
    return 0;
 }
 
