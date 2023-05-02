@@ -224,7 +224,7 @@ int test_big_sub(char*msg) {
    
    //numeros grandes com overflow n funciona
 
-   BigInt gab3 = {0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF};
+   BigInt gab3 = {0x00, 0x01, 0xFF, 0x00, 0xFF, 0xFF, 0x02, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x02, 0x01, 0x01};
    BigInt d = {0x00, 0x00, 0x01, 0x00, 0x01, 0x01, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0xFF, 0xFF};
 
    big_sub(res,a,d);
@@ -324,6 +324,8 @@ int teste_big_shl(char*msg){
    if (test_igual(res, gab22, msg, 4)){
       falhas += 1;
    }
+   
+   //teste de shift menor q 8 em número negativo não funciona
 
    //numero 0
 
@@ -387,6 +389,8 @@ int teste_big_shr(char*msg){
    if (test_igual(res, gab21, msg, 4)){
       falhas += 1;
    }
+   
+   //teste de shift menor que 8 em número negativo não funciona
 
    //numero 0
 
@@ -452,6 +456,8 @@ int teste_big_sar(char*msg){
    if (test_igual(res, gab21, msg, 4)){
       falhas += 1;
    }
+   
+   //teste de shift menor que 8 em número negativo não funciona
 
    //numero 0
 
