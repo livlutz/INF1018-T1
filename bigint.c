@@ -263,20 +263,12 @@ void big_sar(BigInt res, BigInt a, int n){
 
   int j = 0;
 
-  unsigned char shiftLeft, posterior,mostSig;
+  unsigned char shiftLeft, posterior = 0x00,mostSig;
+
+  mostSig = a[(NUM_BITS/8)-1];
 
   for (int i = 0; i < (NUM_BITS/8); i++) {
     res[i] = a[i];
-  }
-
-  mostSig=res[(NUM_BITS/8)-1];
-
-  if((mostSig & 0x80) == 0x80){
-    posterior = 0xFF << (n % 8);
-  }
-
-  else{
-    posterior = 0x00;
   }
 
   for(; j < (n/8); j++){
@@ -285,7 +277,7 @@ void big_sar(BigInt res, BigInt a, int n){
    	
    		if (k == (NUM_BITS/8)-1){
    			if((res[k] & 0x80) == 0x80){
-          res[k] = 0xFF;
+          res[k] = mostSig;
         }
         else{
           res[k] = 0x00;
@@ -305,7 +297,13 @@ void big_sar(BigInt res, BigInt a, int n){
 
     for(;j >= 0;j--){
 
-      shiftLeft=res[j] << (8-(n%8));
+      if(j == (NUM_BITS/8)-1){
+        shiftLeft = mostSig;
+      }
+
+      else{
+        shiftLeft=res[j] << (8-(n%8));
+      }
 
       res[j] >>= (n%8);
 
@@ -319,3 +317,23 @@ void big_sar(BigInt res, BigInt a, int n){
 
 
 }
+
+//função que funciona da big_sar
+
+/*void big_sar(BigInt res, BigInt a, int n) {
+  int i = 0;
+  for (; i < (NUM_BITS/8) ; i++) {
+    res[i] = a[i];
+  }
+  for (i = 0; i < n ; i++) {
+    for (int j = 0; j < (NUM_BITS/8) - 1 ; j++) {
+      res[j] >>= 1;
+      res[j] |= (res[j+1] & 0x01) << 7;
+    }
+    res[(NUM_BITS/8) - 1] >>= 1;
+    res[(NUM_BITS/8) - 1] |= (res[(NUM_BITS/8) - 1] & 0x40) << 1;
+  }
+}*/
+
+
+
