@@ -270,6 +270,14 @@ void big_sar(BigInt res, BigInt a, int n){
   for (int i = 0; i < (NUM_BITS/8); i++) {
     res[i] = a[i];
   }
+  
+  if((mostSig &0x80) == 0x80){
+    posterior=0xFF<<(8-(n%8));
+  }
+
+  else{
+    posterior=0x00;
+  }
 
   for(; j < (n/8); j++){
    
